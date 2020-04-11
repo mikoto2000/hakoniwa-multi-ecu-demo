@@ -1,0 +1,15 @@
+[submodule "athrill"]
+	path = athrill
+	url = https://github.com/tmori/athrill
+[submodule "athrill-target"]
+	path = athrill-target
+	url = https://github.com/tmori/athrill-target
+[submodule "athrill-sample"]
+	path = athrill-sample
+	url = https://github.com/tmori/athrill-sample
+[submodule "mros/asp-athrill-mbed"]
+	path = mros/asp-athrill-mbed
+	url = https://github.com/tmori/asp-athrill-mbed
+[submodule "fork/mROS"]
+	path = fork/mROS
+	url = https://github.com/tlk-emb/mROS

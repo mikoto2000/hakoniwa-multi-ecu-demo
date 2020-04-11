@@ -1,0 +1,12 @@
+FROM ros:kinetic-ros-core-xenial
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="1.0.0"
+LABEL description "base-image: ros:kinetic-ros-core-xenial, socat, dnsutils"
+
+# ネットワーク動通確認用ツール群インストール
+RUN apt-get update \
+    && apt-get -y install socat dnsutils \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
