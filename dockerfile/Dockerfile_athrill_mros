@@ -3,7 +3,7 @@ FROM ubuntu:xenial as build-env
 
 LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
 LABEL version="1.0.0"
-LABEL description "athrill: ec862f6eaab72ee8b5613bac401d7e24a9fd5c5b, athrill-target: 94ebc97c9f24accf3aabdba46b58e13be34b46fa"
+LABEL description "athrill: c24a9933f37b9d22fff70d58e9d89e4eedf59888, athrill-target: 11fedad1811e548704c6d6fc20737f5ce8741c81"
 
 # athrill ビルド環境構築
 RUN apt-get update \
@@ -23,10 +23,10 @@ RUN echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources
 
 RUN git clone https://github.com/tmori/athrill.git /athrill \
     && cd /athrill \
-    && git checkout bc44d01bcc17273f60703769403012079f55b008 \
+    && git checkout c24a9933f37b9d22fff70d58e9d89e4eedf59888 \
     && git clone https://github.com/tmori/athrill-target.git /athrill-target \
     && cd /athrill-target \
-    && git checkout fb4021a3ab518f2102d76fd82346dec37225c48b \
+    && git checkout 11fedad1811e548704c6d6fc20737f5ce8741c81 \
     && cd v850e2m/build_linux \
     && make \
     && cd /athrill/trunk/src/remote/remote_cui_client/ \
