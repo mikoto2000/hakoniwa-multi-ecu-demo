@@ -1,0 +1,68 @@
+version: '3'
+services:
+  athrill_sensor:
+    image: mikoto2000/athrill-mros:old-udp
+    volumes:
+        - ./athrill-sample/mros/mros_ws/hakoniwa-demo/sensor/:/work
+#    command: athrill2 -t -1 -c1 -m memory.txt -d device_config.txt asp
+    command: sleep infinity
+    networks:
+      hakoniwa_net:
+        ipv4_address: 172.16.238.5
+    depends_on:
+      - "ros_master"
+    working_dir: "/work"
+    ports:
+      - "54002:54002/udp"
+  athrill_motor:
+    image: mikoto2000/athrill-mros:old-udp
+    volumes:
+        - ./athrill-sample/mros/mros_ws/hakoniwa-demo/motor:/work
+#    command: athrill2 -t -1 -c1 -m memory.txt -d device_config.txt asp
+    command: sleep infinity
+    networks:
+      hakoniwa_net:
+        ipv4_address: 172.16.238.4
+    depends_on:
+      - "ros_master"
+    working_dir: "/work"
+  athrill_control:
+    image: mikoto2000/athrill-mros:old-udp
+    volumes:
+        - ./athrill-sample/mros/mros_ws/hakoniwa-demo/control/:/work
+#    command: athrill2 -t -1 -c1 -m memory.txt -d device_config.txt asp
+    command: sleep infinity
+    networks:
+      hakoniwa_net:
+        ipv4_address: 172.16.238.3
+    depends_on:
+      - "ros_master"
+    working_dir: "/work"
+  ros_master:
+    image: mikoto2000/kinetic-ros-core-xenial:1.0.0
+    command: roscore
+    ports:
+      - "11311:11311"
+      - "11411:11411"
+    networks:
+      hakoniwa_net:
+        ipv4_address: 172.16.238.2
+  athrill_gcc:
+    image: mikoto2000/athrill-gcc:1.0.0
+    command: sleep infinity
+    networks:
+      hakoniwa_net:
+        ipv4_address: 172.16.238.6
+    volumes:
+        - ./:/work
+        - ./athrill:/work2
+    working_dir: "/work"
+
+networks:
+  hakoniwa_net:
+    ipam:
+      config:
+        - subnet: 172.16.238.0/24
+
+
+

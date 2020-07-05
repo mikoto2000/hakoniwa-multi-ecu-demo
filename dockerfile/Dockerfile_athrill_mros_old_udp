@@ -1,0 +1,46 @@
+# ビルド環境を構築してビルド
+FROM ubuntu:xenial as build-env
+
+LABEL maintainer "mikoto2000 <mikoto2000@gmail.com>"
+LABEL version="1.0.0"
+LABEL description "athrill: c24a9933f37b9d22fff70d58e9d89e4eedf59888, athrill-target: c242d30ca73f080c63e4217928cf87fad11b19d2"
+
+# athrill ビルド環境構築
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get -y install curl git build-essential python2.7-minimal \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# ros インストール
+RUN echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros-latest.list \
+    && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \
+    && curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | apt-key add - \
+    && apt-get update \
+    && apt-get install -y ros-kinetic-ros-core \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/tmori/athrill.git /athrill \
+    && cd /athrill \
+    && git checkout c24a9933f37b9d22fff70d58e9d89e4eedf59888 \
+    && git clone https://github.com/tmori/athrill-target.git /athrill-target \
+    && cd /athrill-target \
+    && git checkout c242d30ca73f080c63e4217928cf87fad11b19d2 \
+    && cd v850e2m/build_linux \
+    && make \
+    && cd /athrill/trunk/src/remote/remote_cui_client/ \
+    && make -f Makefile.linux
+
+RUN cp /athrill/bin/linux/athrill2 /usr/local/bin/athrill2 \
+    && cp /athrill/bin/linux/athrill-run /usr/local/bin/athrill-run \
+    && cp /athrill/bin/linux/athrill_remote /usr/local/bin/athrill_remote
+
+# ネットワーク動通確認用ツール群インストール
+RUN apt-get update \
+    && apt-get -y install socat dnsutils \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+
+
